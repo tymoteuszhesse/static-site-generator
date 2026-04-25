@@ -55,7 +55,7 @@ class TestParentNode(unittest.TestCase):
 
     def test_to_html_no_children(self):
         node = ParentNode("p",
-    [])
+    None)
         with self.assertRaisesRegex(ValueError, "missing children"): node.to_html()  
 
     def test_to_html_no_tag(self):
