@@ -17,7 +17,7 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, 'w') as destination:
         destination.write(template_content)
         
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     if not os.path.exists(dir_path_content):
         return
     for content in os.listdir(dir_path_content):
@@ -34,9 +34,11 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             title = extract_title(markdown)
             template_content = template_content.replace("{{ Title }}", title)
             template_content = template_content.replace("{{ Content }}", html)
+            template_content = template_content.replace(f'href="/', f'href="{basepath}/')
+            template_content = template_content.replace(f'src="/', f'src="{basepath}/')
             os.makedirs(os.path.dirname(destination_path), exist_ok=True)
             with open(destination_path, 'w') as destination:
                 destination.write(template_content)
         elif not os.path.isfile(source_path):
-            generate_pages_recursive(source_path, template_path, destination_path)                  
+            generate_pages_recursive(source_path, template_path, destination_path, basepath)                  
             

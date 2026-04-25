@@ -1,14 +1,19 @@
 from textnode import TextNode, TextType
 import os
 import shutil
+import sys
 from generate import generate_pages_recursive
 def main():
-    destination = "public"
+    basepath = ""
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1].rstrip("/")
+    
+    destination = "docs"
     if os.path.exists(destination):
         shutil.rmtree(destination)
     os.mkdir(destination)    
     copy_content("static", destination)
-    generate_pages_recursive('content', 'template.html', destination)
+    generate_pages_recursive('content', 'template.html', destination, basepath)
 
 
 def copy_content(source, destination):
